@@ -1,0 +1,76 @@
+/* ❌ TẮT hover + focus + active */
+.ant-input,
+.ant-input-affix-wrapper {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* hover */
+.ant-input:hover,
+.ant-input-affix-wrapper:hover {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+/* focus */
+.ant-input:focus,
+.ant-input-focused,
+.ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper-focused {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* active (click giữ chuột) */
+.ant-input:active,
+.ant-input-affix-wrapper:active {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* fix luôn cả input bên trong */
+.ant-input input {
+    background: transparent !important;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: transparent;
+}
+
+.input {
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    background: transparent;
+    color: #fff;
+}
+
+.title :global(h3.ant-typography) {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.loginCard {
+    width: 400; 
+    background: transparent; 
+    border: none;
+}
+
+input:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: transparent;
+}

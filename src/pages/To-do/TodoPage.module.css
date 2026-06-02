@@ -1,0 +1,157 @@
+.container {
+max-width: 650px;
+margin: 30px auto;
+}
+
+/* ================= CARD ================= */
+.card {
+border-radius: 20px !important;
+backdrop-filter: blur(14px);
+background: rgba(0, 0, 0, 0.45) !important;
+
+border: 1px solid rgba(255, 255, 255, 0.2);
+
+box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(123, 97, 255, 0.2);
+
+}
+
+/* header card */
+.card :global(.ant-card-head) {
+border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+
+/* ================= INPUT ================= */
+.inputGroup {
+width: 100%;
+margin-bottom: 20px;
+}
+
+.input {
+background: rgba(255, 255, 255, 0.08) !important;
+border: 1px solid rgba(255, 255, 255, 0.25) !important;
+color: #fff;
+transition: 0.3s;
+}
+
+/* input text */
+.input input {
+color: #fff !important;
+}
+
+/* placeholder */
+.input input::placeholder {
+color: rgba(255, 255, 255, 0.5);
+}
+
+/* focus glow */
+.input:focus-within {
+border-color: #7b61ff !important;
+box-shadow:
+0 0 10px #7b61ff,
+0 0 20px rgba(123, 97, 255, 0.4);
+}
+
+/* ================= BUTTON ================= */
+.addBtn {
+background: linear-gradient(135deg, #00f5ff, #7b61ff, #ff00c8);
+border: none;
+color: #fff;
+transition: all 0.3s ease;
+}
+
+.addBtn:hover {
+transform: scale(1.1);
+box-shadow:
+0 0 10px #00f5ff,
+0 0 20px #7b61ff,
+0 0 30px #ff00c8;
+}
+
+/* ================= LIST ================= */
+.list {
+margin-top: 10px;
+}
+
+/* ================= ITEM ================= */
+.item {
+border-radius: 14px;
+margin-bottom: 12px;
+padding: 14px !important;
+color: #fff;
+
+background: rgba(255, 255, 255, 0.05);
+border: 1px solid rgba(255, 255, 255, 0.15);
+
+transition: all 0.35s ease;
+position: relative;
+overflow: hidden;
+
+}
+
+/* glow layer */
+.item::before {
+color: #fff;
+content: "";
+position: absolute;
+inset: 0;
+background: radial-gradient(
+circle at center,
+rgba(0, 255, 255, 0.25),
+rgba(123, 97, 255, 0.2),
+rgba(255, 0, 200, 0.15)
+);
+opacity: 0;
+transition: 0.4s;
+}
+
+/* hover */
+.item:hover {
+transform: translateY(-5px) scale(1.02);
+border-color: rgba(255, 255, 255, 0.4);
+
+box-shadow:
+    0 0 10px rgba(0, 255, 255, 0.6),
+    0 0 20px rgba(123, 97, 255, 0.6),
+    0 0 30px rgba(255, 0, 200, 0.5);
+
+}
+
+.item:hover::before {
+opacity: 1;
+}
+
+/* ================= CHECKED ================= */
+.completed {
+opacity: 0.6;
+filter: grayscale(0.3);
+}
+
+/* ================= DELETE ================= */
+.deleteBtn {
+opacity: 0;
+transition: 0.3s;
+}
+
+/* hiện nút khi hover */
+.item:hover .deleteBtn {
+opacity: 1;
+}
+
+/* ================= CHECKBOX ================= */
+:global(.ant-checkbox-inner) {
+background-color: rgba(255, 255, 255, 0.1);
+border-color: #aaa;
+}
+
+:global(.ant-checkbox-checked .ant-checkbox-inner) {
+background-color: #7b61ff;
+border-color: #7b61ff;
+}
+
+.cardTitle {
+    color: #fff;
+    font-weight: 600;
+}

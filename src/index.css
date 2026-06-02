@@ -1,0 +1,242 @@
+/* =========================
+   🌌 BACKGROUND FUTURE
+========================= */
+.bg-future {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    background: radial-gradient(circle at 20% 30%, #0f172a, #020617 70%);
+}
+
+/* Layer gradient chuyển động */
+.bg-future::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        120deg,
+        #6c63ff,
+        #00f5ff,
+        #ff4d6d,
+        #6c63ff
+    );
+    background-size: 200%;
+    opacity: 0.15;
+    animation: gradientMove 20s linear infinite;
+}
+
+/* Layer glow */
+.bg-future::after {
+    content: "";
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    background: radial-gradient(circle, rgba(0,245,255,0.25), transparent 60%);
+    animation: floatGlow 10s ease-in-out infinite;
+}
+
+/* =========================
+   🌌 PARTICLES (dot bay bay)
+========================= */
+/* .particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.particles span {
+    position: absolute;
+    display: block;
+    width: 4px;
+    height: 4px;
+    background: #00f5ff;
+    border-radius: 50%;
+    animation: floatUp linear infinite;
+}
+
+.particles span:nth-child(1) { left: 10%; animation-duration: 12s; }
+.particles span:nth-child(2) { left: 25%; animation-duration: 18s; }
+.particles span:nth-child(3) { left: 40%; animation-duration: 15s; }
+.particles span:nth-child(4) { left: 60%; animation-duration: 20s; }
+.particles span:nth-child(5) { left: 75%; animation-duration: 14s; }
+.particles span:nth-child(6) { left: 90%; animation-duration: 22s; } */
+
+
+
+/* =========================
+   🌌 ANIMATIONS
+========================= */
+@keyframes gradientMove {
+    0% { transform: translate(0,0); }
+    50% { transform: translate(-25%, -25%); }
+    100% { transform: translate(0,0); }
+}
+
+@keyframes floatGlow {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-50px); }
+}
+
+@keyframes floatUp {
+    0% {
+        bottom: -10px;
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        bottom: 110%;
+        opacity: 0;
+        transform: scale(1.2);
+    }
+}
+
+.danger-modal .ant-modal-content {
+  background: #1a0000;
+  border: 2px solid red;
+  animation: shake 0.4s infinite;
+}
+
+.danger-content {
+  color: #ff4d4f;
+  font-size: 26px;
+  text-align: center;
+  font-weight: bold;
+  animation: pulse 1s infinite;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+/*-----------------*/
+
+.warning-box {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+
+    background: radial-gradient(circle, #200000, #000);
+    color: #ff2e2e;
+
+    padding: 20px 30px;
+    border: 2px solid #ff0000;
+    border-radius: 14px;
+
+    box-shadow:
+        0 0 10px red,
+        0 0 20px red,
+        0 0 40px darkred;
+
+    font-family: monospace;
+    text-align: center;
+
+    animation:
+        moveCrazy 3s linear infinite,
+        shake 0.15s infinite,
+        pulse 0.8s infinite;
+
+    will-change: transform;
+}
+
+@keyframes shake {
+    0% { transform: translate(0, 0); }
+    10% { transform: translate(2px, -2px); }
+    25% { transform: translate(2px, -2px); }
+    35% { transform: translate(-2px, 2px); }
+    50% { transform: translate(-2px, 2px); }
+    60% { transform: translate(2px, -2px); }
+    75% { transform: translate(2px, 2px); }
+    100% { transform: translate(0, 0); }
+}
+
+@keyframes moveCrazy {
+    0%   { transform: translate(5vw, 10vh); }
+    20%  { transform: translate(70vw, 5vh); }
+    40%  { transform: translate(80vw, 70vh); }
+    60%  { transform: translate(10vw, 80vh); }
+    80%  { transform: translate(50vw, 40vh); }
+    100% { transform: translate(5vw, 10vh); }
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 10px red; }
+    50% { box-shadow: 0 0 40px red, 0 0 80px darkred; }
+    100% { box-shadow: 0 0 10px red; }
+}
+
+.warning-text {
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 2px;
+
+    text-shadow:
+        0 0 5px red,
+        0 0 10px red,
+        0 0 20px darkred;
+}
+
+.ant-pagination-prev .ant-pagination-item-link,
+.ant-pagination-next .ant-pagination-item-link {
+    color: #1890ff; /* màu icon */
+    border-color: #1890ff;
+}
+
+/* Hover */
+.ant-pagination-prev:hover .ant-pagination-item-link,
+.ant-pagination-next:hover .ant-pagination-item-link {
+    color: #40a9ff;
+    border-color: #40a9ff;
+}
+
+
+
+.dice-inline {
+    min-width: 250px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    color: white;
+    display: flex;
+    align-items: center;
+    margin-left: 100px;
+}
+
+/* dice animation */
+.dice-box {
+    font-size: 20px;
+    animation: diceRoll 0.8s infinite;
+}
+
+/* icon quay */
+.dice-spin {
+    animation: spinDice 0.8s linear infinite;
+}
+
+/* keyframes */
+@keyframes diceRoll {
+    0% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(90deg) scale(1.2); }
+    50% { transform: rotate(180deg) scale(0.8); }
+    75% { transform: rotate(270deg) scale(1.1); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes spinDice {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
