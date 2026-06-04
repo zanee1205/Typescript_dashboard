@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Table, Spin, Typography, Tag, Checkbox, InputNumber, Space } from "antd";
+import { Table, Spin, Typography, Tag, InputNumber, Space } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { rootStore } from "../../store/store";
 import { observer } from "mobx-react-lite";
@@ -11,31 +11,53 @@ const { Title } = Typography;
 const UserCarts = observer(() => {
     const { auth } = rootStore;
     const user = auth.user;
-    
+
     const [carts, setCarts] = useState<Cart[]>([]);
     const [loading, setLoading] = useState(true);
-    const [isAll, setIsAll] = useState(false);
+    
+    const [pagination, setPagination] = useState({
+        current: 1,
+        pageSize: 5,
+        total: 0,
+    })
+
     const [minPrice, setMinPrice] = useState<number | null>(null);
     const [maxPrice, setMaxPrice] = useState<number | null>(null);
 
 
     useEffect(() => {
-        setLoading(true);
-        const url = isAll
-            ? "https://dummyjson.com/carts"
-            : `https://dummyjson.com/users/${user?.id}/carts`;
 
         if (!user?.id) return;
+        
+        setLoading(true);
+
+        const skip = (pagination.current - 1) * pagination.pageSize;
+
+        let url = `https://dummyjson.com/carts?limit=${pagination.pageSize}&skip=${skip}`;
+        console.log(url);
 
         fetch(url)
             .then(res => res.json())
             .then(data => {
                 setCarts(data.carts || []);
+                
+                setPagination(prev => ({
+                    ...prev,
+                    total: data.total
+                }))
             })
             .finally(() => {
                 setLoading(false);
             })
-    }, [user, isAll]);
+    }, [user, pagination.current, pagination.pageSize]);
+
+    const paginationChange = (p: any) => {
+        setPagination(prev => ({
+            ...prev,
+            current: p.current,
+            pageSize: p.pageSize,
+        }));
+    };
 
     const filteredCarts = carts.filter(cart => {
         const total = cart.total;
@@ -90,20 +112,12 @@ const UserCarts = observer(() => {
 
     return (
         <div style={{ padding: 20 }}>
-            <Title level={3} style={{ marginBottom: 20, color: "white" }}>
+            <Title level={3} style={{marginBottom: 10, marginTop: 0, color: "white" }}>
                 Your Carts
             </Title>
 
             <div style={{ marginBottom: 16 }}>
                 <Space size="middle" align="center">
-                    {/* ALL ORDERS */}
-                    <Checkbox
-                        checked={isAll}
-                        style = {{ color: "white" }}
-                        onChange={(e) => setIsAll(e.target.checked)}
-                    >
-                        All Orders
-                    </Checkbox>
 
                     {/* MIN PRICE */}
                     <InputNumber
@@ -129,7 +143,7 @@ const UserCarts = observer(() => {
                 dataSource={filteredCarts}
                 rowKey="id"
                 bordered
-                pagination={{ pageSize: 5 }}
+                pagination={pagination}
                 expandable={{
                     expandedRowRender: (cart) => (
                         <div style={{ paddingLeft: 20 }}>
@@ -143,10 +157,15 @@ const UserCarts = observer(() => {
                                         borderBottom: "1px solid #eee",
                                     }}
                                 >
-                                    <span>{p.title}</span>
+                                    <span style={{ fontWeight: "bold" }}>{p.title}</span>
                                     <span>
-                                        ${p.price} x {p.quantity} ={" "}
-                                        <b>${p.price * p.quantity}</b>
+                                        {p.price.toLocaleString()} x {p.quantity} ={" "}
+                                        <b>{(p.price * p.quantity).toLocaleString()}</b>
+                                        <img
+                                            src={p.thumbnail}
+                                            alt={p.title}
+                                            style={{ width: 50, height: 50, objectFit: "cover", marginLeft: 10 }}
+                                        />
                                     </span>
                                 </div>
                             ))}
@@ -154,6 +173,8 @@ const UserCarts = observer(() => {
                     ),
                     expandIconColumnIndex: columns.length,
                 }}
+                onChange={paginationChange}
+                scroll={{ y: 400 }}
             />
         </div>
     );

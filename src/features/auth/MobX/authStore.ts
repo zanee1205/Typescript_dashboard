@@ -13,6 +13,10 @@ export class AuthStore {
 
     constructor(root: any) {
         this.root = root;
+
+        this.accessToken = localStorage.getItem("accessToken");
+        this.refreshToken = localStorage.getItem("refreshToken");
+        
         makeAutoObservable(this);
     }
 

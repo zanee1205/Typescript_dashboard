@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Table, Spin, Typography, Tag, Select, Input, Space, Checkbox } from "antd";
+import { Table, Spin, Typography, Tag, Select, Input, Space } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { rootStore } from "../../store/store";
 import type { Post } from "../../types/post";
@@ -14,10 +14,15 @@ const UserPosts = observer(() => {
 
     const [loading, setLoading] = useState(true);
     const [allPosts, setAllPosts] = useState<Post[]>([]);
-    const [isAll, setIsAll] = useState(false);
 
     const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
     const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+
+    const [pagination, setPagination] = useState({
+        current: 1,
+        pageSize: 5,
+        total: 0,
+    });
 
     const fetchAll = () => {
         setLoading(true);
@@ -26,6 +31,9 @@ const UserPosts = observer(() => {
             .then(res => res.json())
             .then(data => {
                 setAllPosts(data.posts || []);
+
+            })
+            .finally(() => {
                 setLoading(false);
             });
     };
@@ -48,24 +56,40 @@ const UserPosts = observer(() => {
 
 
     useEffect(() => {
+
         if (!user?.id) return;
 
         setLoading(true);
 
-        const url = isAll
-            ? "https://dummyjson.com/posts"
-            : `https://dummyjson.com/posts/user/${user?.id}`;
+        const skip = (pagination.current - 1) * pagination.pageSize;
+
+        let url = `https://dummyjson.com/posts?limit=${pagination.pageSize}&skip=${skip}`;
+        console.log(url);
+
 
         fetch(url)
             .then(res => res.json())
             .then(data => {
                 setAllPosts(data.posts || []);
+
+                setPagination(prev => ({
+                    ...prev,
+                    total: data.total
+                }));
             })
             .finally(() => {
                 setLoading(false);
             });
 
-    }, [user, isAll]);
+    }, [user, pagination.current, pagination.pageSize]);
+
+    const paginationChange = (p: any) => {
+        setPagination(prev => ({
+            ...prev,
+            current: p.current,
+            pageSize: p.pageSize,
+        }));
+    };
 
     const languageOptions = [
         { label: "French", value: "french" },
@@ -144,21 +168,16 @@ const UserPosts = observer(() => {
         )
     }
 
+
+
     return (
-        <div style={{ padding: 20 }}>
-            <Title level={3} style={{ marginBottom: 20, color: "white" }}>
+        <div style={{ padding: 20  }}>
+            <Title level={3} style={{ marginBottom: 10, marginTop: 0, color: "white" }}>
                 Your Posts
             </Title>
 
             {/* FILTER BAR */}
             <Space wrap style={{ marginBottom: 16 }}>
-                <Checkbox
-                    checked={isAll}
-                    onChange={(e) => setIsAll(e.target.checked)}
-                    style={{ color: "white" }}
-                >
-                    All Posts
-                </Checkbox>
                 {/* SEARCH */}
                 <Search
                     placeholder="Search posts..."
@@ -192,7 +211,7 @@ const UserPosts = observer(() => {
                 dataSource={filteredPosts}
                 rowKey="id"
                 bordered
-                pagination={{ pageSize: 5 }}
+                pagination={pagination}
                 expandable={{
                     expandedRowRender: (post) => (
                         <div style={{ paddingLeft: 20 }}>
@@ -201,6 +220,8 @@ const UserPosts = observer(() => {
                     ),
                     expandIconColumnIndex: columns.length,
                 }}
+                onChange={paginationChange}
+                scroll={{ y: 400 }}
             />
         </div>
     );

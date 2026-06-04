@@ -21,7 +21,7 @@ const handleSessionExpired = () => {
 };
 
 axiosClient.interceptors.request.use((config) => {
-    const token = rootStore.auth.accessToken;
+    const token = rootStore.auth.accessToken || localStorage.getItem("accessToken");
 
     if (token && !config.url?.includes("/auth/login") && !config.url?.includes("/auth/refresh")) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -44,7 +44,7 @@ axiosClient.interceptors.response.use(
         if (error.response?.status === 401 && !originalRequest._retry && !isAuthEndpoint) {
             originalRequest._retry = true;
 
-            const refreshToken = rootStore.auth.refreshToken;
+            const refreshToken = rootStore.auth.refreshToken || localStorage.getItem("refreshToken");
 
             if (!refreshToken) {
                 handleSessionExpired();

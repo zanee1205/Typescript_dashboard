@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MenuFoldOutlined, MenuUnfoldOutlined, PieChartOutlined, DesktopOutlined, ContainerOutlined, SettingOutlined } from "@ant-design/icons";
+import { MenuFoldOutlined, MenuUnfoldOutlined, PieChartOutlined, DesktopOutlined, ContainerOutlined, SettingOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Button, Menu } from "antd";
 import type { MenuProps } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -15,9 +15,10 @@ const AppSidebar: React.FC = () => {
   const navigate = useNavigate();
 
   const items: MenuItem[] = [
-    { key: "/carts", icon: <PieChartOutlined />, label: "User's Carts", onClick: () => navigate("/carts") },
-    { key: "/posts", icon: <DesktopOutlined />, label: "User Posts", onClick: () => navigate("/posts") },
+    { key: "/carts", icon: <ShoppingCartOutlined />, label: "User's Carts", onClick: () => navigate("/carts") },
+    { key: "/posts", icon: <DesktopOutlined />, label: "User's Posts", onClick: () => navigate("/posts") },
     { key: "/todos", icon: <ContainerOutlined />, label: "User Todos", onClick: () => navigate("/todos") },
+    { key: "/recipe", icon: <PieChartOutlined />, label: "User's Recipe", onClick: () => navigate("/todos") },
     {
     key: "settings",
     label: "Settings",
