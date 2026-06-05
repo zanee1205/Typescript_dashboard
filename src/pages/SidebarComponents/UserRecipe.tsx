@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Table, Spin, Typography, Tag, Select, Space, Input } from "antd";
-import type { ColumnsType } from "antd/es/table";
+import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import { rootStore } from "../../store/store";
 import { observer } from "mobx-react-lite";
 import type { Recipe } from "../../types/recipe";
+import type { PaginationState } from "../../types/paginationstate";
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -15,11 +16,11 @@ const UserRecipe = observer(() => {
     const [loading, setLoading] = useState(true);
     const [recipes, setRecipes] = useState<Recipe[]>([]);
 
-    const [pagination, setPagination] = useState({
+    const [pagination, setPagination] = useState<PaginationState>({
         current: 1,
         pageSize: 5,
         total: 0,
-    })
+    });
 
     const [selectedCuisine, setSelectedCuisine] = useState<string[]>([]);
     const [selectedMeal, setSelectedMeal] = useState<string[]>([]);
@@ -33,17 +34,18 @@ const UserRecipe = observer(() => {
         }));
     };
 
-    useEffect(() => {
+    const { current, pageSize } = pagination;
 
+    useEffect(() => {
         if (!user?.id) return;
 
         setLoading(true);
 
-        const skip = (pagination.current - 1) * pagination.pageSize;
+        const skip = (current - 1) * pageSize;
 
-        let url = search
+        const url = search
             ? `https://dummyjson.com/recipes/search?q=${search}`
-            : `https://dummyjson.com/recipes?limit=${pagination.pageSize}&skip=${skip}`;
+            : `https://dummyjson.com/recipes?limit=${pageSize}&skip=${skip}`;
         console.log(url);
 
         fetch(url)
@@ -52,20 +54,20 @@ const UserRecipe = observer(() => {
                 setRecipes(data.recipes || []);
                 setPagination(prev => ({
                     ...prev,
-                    total: data.total
+                    total: data.total,
                 }));
             })
             .finally(() => {
                 setLoading(false);
             });
-    }, [user, pagination.current, pagination.pageSize, search]);
-
-    const paginationChange = (p: any) => {
+    }, [user, search, current, pageSize]);
+    
+    const paginationChange = (page: TablePaginationConfig) => {
         setPagination(prev => ({
             ...prev,
-            current: p.current,
-            pageSize: p.pageSize || 5
-        }))
+            current: page.current ?? prev.current,
+            pageSize: page.pageSize ?? prev.pageSize,
+        }));
     }
 
     const filteredRecipes = recipes.filter((recipe) => {
@@ -100,7 +102,7 @@ const UserRecipe = observer(() => {
         { label: "Pakistani", value: "pakistani" },
         { label: "Japanese", value: "japanese" },
         { label: "Moroccan", value: "moroccan" },
-        { lebel: "Korean", value: "korean" },
+        { label: "Korean", value: "korean" },
         { label: "Greek", value: "greek" },
         { label: "Thai", value: "thai" },
         { label: "Turkish", value: "turkish" },
@@ -203,6 +205,7 @@ const UserRecipe = observer(() => {
                     columns={columns}
                     dataSource={filteredRecipes}
                     pagination={pagination}
+                    rowKey="id"
                     onChange={paginationChange}
                     scroll={{ y: 400 }}
                 />

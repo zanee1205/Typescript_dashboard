@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Table, Spin, Typography, Tag, Space, Button, Select } from "antd";
 import { ReloadOutlined } from "@ant-design/icons";
-import type { ColumnsType } from "antd/es/table";
+import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import { rootStore } from "../../store/store";
 import { observer } from "mobx-react-lite";
 import type { Todo } from "../../types/todo";
-import type { TablePaginationConfig } from "antd/es/table";
+import type { PaginationState } from "../../types/paginationstate";
 
 const { Title } = Typography;
 
@@ -19,11 +19,13 @@ const UserTodo = observer(() => {
     const [randomTodo, setRandomTodo] = useState<Todo | null>(null);
     const [selectedStatus, setSelectedStatus] = useState<boolean[]>([]);
 
-    const [pagination, setPagination] = useState({
+    const [pagination, setPagination] = useState<PaginationState>({
         current: 1,
         pageSize: 5,
         total: 0,
     })
+
+    const { current, pageSize } = pagination;
 
     const rollRandomTodo = () => {
         setRolling(true);
@@ -81,7 +83,7 @@ const UserTodo = observer(() => {
             })
             .finally(() => setLoading(false));
 
-    }, [user, pagination.current, pagination.pageSize, selectedStatus]);
+    }, [user, current, pageSize, selectedStatus, pagination]);
 
 
     const paginationChange = (p: TablePaginationConfig) => {

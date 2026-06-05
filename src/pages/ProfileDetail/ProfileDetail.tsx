@@ -1,20 +1,27 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, Avatar, Typography, Button, Form, Input, Space, notification, Popconfirm, Spin, Skeleton, Upload, Progress, Select, DatePicker } from "antd";
+import type { UploadProps } from "antd";
 import { PlusOutlined, LoadingOutlined } from "@ant-design/icons";
+import type { RcFile } from "antd/es/upload";
 import { rootStore } from "../../store/store";
 import { observer } from "mobx-react-lite";
+import type { User } from "../../types/user";
 
 import dayjs from "dayjs";
 import styles from "./ProfileDetail.module.css";
 
 const { Title, Text } = Typography;
 
+type ProfileFormValues = Omit<User, "birthDate"> & {
+    birthDate: dayjs.Dayjs | null;
+    image?: string;
+};
 
 const Home = observer(() => {
     const navigate = useNavigate();
     const [isEditing, setIsEditing] = useState(false);
-    const [form] = Form.useForm();
+    const [form] = Form.useForm<ProfileFormValues>();
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [loadingImg, setLoadingImg] = useState(false);
     const [percent, setPercent] = useState(0);
@@ -51,7 +58,7 @@ const Home = observer(() => {
         navigate("/login");
     };
 
-    const handleSave = (values: any) => {
+    const handleSave = (values: ProfileFormValues) => {
         const formattedValues = {
             ...values,
             birthDate: values.birthDate
@@ -83,7 +90,10 @@ const Home = observer(() => {
         setIsEditing(false);
     };
 
-    const handleUpload = ({ file }: any) => {
+    type ProfileUploadRequest = Parameters<NonNullable<UploadProps["customRequest"]>>[0];
+
+    const handleUpload = (options: ProfileUploadRequest) => {
+        const file = options.file as RcFile;
         setLoadingImg(true);
         setPercent(0);
 
@@ -121,18 +131,20 @@ const Home = observer(() => {
         if (!accessToken) {
             navigate("/login");
         }
-    }, [accessToken]);
+    }, [accessToken, navigate]);
 
     if (loading) {
-        <div className={styles.container}>
-            <Spin size="large" />
-            <div style={{ width: 250, marginTop: 20 }}>
-                <Skeleton active paragraph={{ rows: 3 }} />
+        return (
+            <div className={styles.container}>
+                <Spin size="large" />
+                <div style={{ width: 250, marginTop: 20 }}>
+                    <Skeleton active paragraph={{ rows: 3 }} />
+                </div>
+                <p style={{ color: "#fff", marginTop: 16 }}>
+                    Loading...
+                </p>
             </div>
-            <p style={{ color: "#fff", marginTop: 16 }}>
-                Loading...
-            </p>
-        </div>
+        );
     }
 
     if (!user) {

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Table, Spin, Typography, Tag, Select, Input, Space } from "antd";
-import type { ColumnsType } from "antd/es/table";
+import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import { rootStore } from "../../store/store";
 import type { Post } from "../../types/post";
 import { observer } from "mobx-react-lite"; 
+import type { PaginationState } from "../../types/paginationstate";
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -18,11 +19,12 @@ const UserPosts = observer(() => {
     const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
     const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
 
-    const [pagination, setPagination] = useState({
+    const [pagination, setPagination] = useState<PaginationState>({
         current: 1,
         pageSize: 5,
         total: 0,
     });
+    const { current, pageSize } = pagination;
 
     const fetchAll = () => {
         setLoading(true);
@@ -63,7 +65,7 @@ const UserPosts = observer(() => {
 
         const skip = (pagination.current - 1) * pagination.pageSize;
 
-        let url = `https://dummyjson.com/posts?limit=${pagination.pageSize}&skip=${skip}`;
+        const url = `https://dummyjson.com/posts?limit=${pagination.pageSize}&skip=${skip}`;
         console.log(url);
 
 
@@ -81,13 +83,13 @@ const UserPosts = observer(() => {
                 setLoading(false);
             });
 
-    }, [user, pagination.current, pagination.pageSize]);
+    }, [user, current, pageSize, pagination]);
 
-    const paginationChange = (p: any) => {
+    const paginationChange = (p: TablePaginationConfig) => {
         setPagination(prev => ({
             ...prev,
-            current: p.current,
-            pageSize: p.pageSize,
+            current: p.current ?? prev.current,
+            pageSize: p.pageSize ?? prev.pageSize,
         }));
     };
 
