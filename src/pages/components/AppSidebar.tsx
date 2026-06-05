@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MenuFoldOutlined, MenuUnfoldOutlined, PieChartOutlined, DesktopOutlined, ContainerOutlined, SettingOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import { MenuFoldOutlined, MenuUnfoldOutlined, PieChartOutlined, DesktopOutlined, ContainerOutlined, SettingOutlined, ShoppingCartOutlined, AliwangwangOutlined } from "@ant-design/icons";
 import { Button, Menu } from "antd";
 import type { MenuProps } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -18,17 +18,18 @@ const AppSidebar: React.FC = () => {
     { key: "/carts", icon: <ShoppingCartOutlined />, label: "User's Carts", onClick: () => navigate("/carts") },
     { key: "/posts", icon: <DesktopOutlined />, label: "User's Posts", onClick: () => navigate("/posts") },
     { key: "/todos", icon: <ContainerOutlined />, label: "User Todos", onClick: () => navigate("/todos") },
-    { key: "/recipe", icon: <PieChartOutlined />, label: "User's Recipe", onClick: () => navigate("/todos") },
+    { key: "/recipe", icon: <PieChartOutlined />, label: "User's Recipe", onClick: () => navigate("/recipe") },
+    { key: "/comments", icon: <AliwangwangOutlined />, label: "User's Comments", onClick: () => navigate("/comments") },
     {
-    key: "settings",
-    label: "Settings",
-    icon: <SettingOutlined />,
-    children: [
-      { key: "profile", label: "Edit Profile" },
-      { key: "todo", label: "Todo List" },
-      { key: "logs", label: "Activity Log" },
-    ],
-  },
+      key: "settings",
+      label: "Settings",
+      icon: <SettingOutlined />,
+      children: [
+        { key: "profile", label: "Edit Profile" },
+        { key: "todo", label: "Todo List" },
+        { key: "logs", label: "Activity Log" },
+      ],
+    },
   ];
 
   React.useEffect(() => {
@@ -78,10 +79,10 @@ const AppSidebar: React.FC = () => {
   );
 
   return (
-  <>
-    {sidebarElement}
-  </>
-);
+    <>
+      {sidebarElement}
+    </>
+  );
 };
 
 export default AppSidebar;

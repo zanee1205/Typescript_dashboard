@@ -3,7 +3,7 @@ import { Table, Spin, Typography, Tag, Select, Input, Space } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { rootStore } from "../../store/store";
 import type { Post } from "../../types/post";
-import { observer } from "mobx-react-lite";
+import { observer } from "mobx-react-lite"; 
 
 const { Title } = Typography;
 const { Search } = Input;

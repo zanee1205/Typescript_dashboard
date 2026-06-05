@@ -10,7 +10,8 @@ import MainLayout from "./MainLayout";
 import UserCarts from "./pages/SidebarComponents/UserCarts";
 import UserPosts from "./pages/SidebarComponents/UserPosts";
 import UserTodo from "./pages/SidebarComponents/UserTodo";
-import UserRecipe from "./pages/SidebarComponents/UserRecipe";    
+import UserRecipe from "./pages/SidebarComponents/UserRecipe"; 
+import UserComments from "./pages/SidebarComponents/UserComments";   
 
 const Login = lazy(() => import("./pages/Secure/Login"));
 const Home = lazy(() => import("./pages/Homepage/Home"));
@@ -76,6 +77,7 @@ function AppContent() {
             <Route path="/posts" element={<UserPosts />} />
             <Route path="/todos" element={<UserTodo />} />
             <Route path="/recipe" element={<UserRecipe />} />
+            <Route path="/comments" element={<UserComments />} />
           </Route>
         </Routes>
       </Suspense>

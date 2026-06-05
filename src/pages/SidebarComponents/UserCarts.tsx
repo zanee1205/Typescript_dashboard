@@ -24,7 +24,6 @@ const UserCarts = observer(() => {
     const [minPrice, setMinPrice] = useState<number | null>(null);
     const [maxPrice, setMaxPrice] = useState<number | null>(null);
 
-
     useEffect(() => {
 
         if (!user?.id) return;
